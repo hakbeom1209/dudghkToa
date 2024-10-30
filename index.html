@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sequential Rainbow Text Animation</title>
+    <title>Moving Rainbow Text Animation</title>
     <style>
         /* 기본 스타일 */
         body {
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
 
         .rainbow-text {
+            position: relative;
             font-size: 48px;
             font-weight: bold;
             display: flex;
-            gap: 5px; /* 각 글자 간격 */
+            gap: 10px; /* 각 글자 간격 */
         }
 
         .letter {
-            transition: color 0.1s; /* 색상 전환 시간 */
+            position: absolute; /* 글자를 절대 위치로 */
+            transition: color 0.1s, transform 0.5s; /* 색상 및 위치 전환 시간 */
         }
     </style>
 </head>
@@ -44,16 +47,26 @@
         const letters = document.querySelectorAll('.letter');
         let colorIndex = 0;
 
-        // 각 글자의 색상을 규칙적으로 변경
+        // 무작위 위치 지정 함수
+        function setRandomPosition(element) {
+            const maxX = window.innerWidth - 50; // 화면 너비 고려
+            const maxY = window.innerHeight - 50; // 화면 높이 고려
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            element.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // 각 글자의 색상과 위치를 주기적으로 변경
         setInterval(() => {
             letters.forEach((letter, index) => {
-                // 각 글자에 색상을 순서대로 지정
+                // 색상 순서대로 지정
                 letter.style.color = colors[(colorIndex + index) % colors.length];
+                // 무작위 위치로 이동
+                setRandomPosition(letter);
             });
-            colorIndex = (colorIndex + 1) % colors.length; // 다음 색상으로 이동
-        }, 130); // 0.1초마다 실행
+            colorIndex = (colorIndex + 1) % colors.length;
+        }, 100); // 0.1초마다 실행
     </script>
 
 </body>
 </html>
-	
