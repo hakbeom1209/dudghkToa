@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toggle Moving Rainbow Text Animation</title>
     <style>
-        /* 기본 스타일 */
         body {
             display: flex;
             justify-content: center;
@@ -27,15 +26,14 @@
             gap: 20px;
             justify-content: space-around;
             align-items: center;
-            position: relative; /* 컨테이너를 기준으로 자식 요소 위치 설정 */
+            position: relative;
         }
 
         .letter {
-            transition: color 0.1s, transform 0.3s; /* 색상 및 위치 전환 시간 */
-            position: relative; /* 고정 위치 시 컨테이너 내부에서 상대 위치로 */
+            transition: color 0.1s, transform 0.3s;
+            position: relative;
         }
 
-        /* 스위치 스타일 */
         .switch-container {
             position: absolute;
             top: 20px;
@@ -51,36 +49,35 @@
 </head>
 <body>
 
-    <!-- 스위치 버튼 -->
     <div class="switch-container">
         <button class="switch-button" id="toggleButton">움직임 켜기</button>
     </div>
 
     <div class="rainbow-text">
-        <span class="letter">유</span>
-        <span class="letter">키</span>
-        <span class="letter">사</span>
-        <span class="letter">랑</span>
-        <span class="letter">해</span>
+        <span class="letter">정</span>
+        <span class="letter">상</span>
+        <span class="letter">화</span>
+        <span class="letter">는</span>
+        <span class="letter">&nbsp;</span>
+        <span class="letter">대</span>
+        <span class="letter">로</span>
+        <span class="letter">틀</span>
     </div>
 
     <script>
-        // 무지개 색상 배열
         const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
         const letters = document.querySelectorAll('.letter');
         let colorIndex = 0;
         let isMoving = false;
         let moveIntervalId;
 
-        // 색상 변경 함수 (스위치와 상관없이 항상 실행)
         setInterval(() => {
             letters.forEach((letter, index) => {
                 letter.style.color = colors[(colorIndex + index) % colors.length];
             });
             colorIndex = (colorIndex + 1) % colors.length;
-        }, 100); // 0.1초마다 실행
+        }, 100);
 
-        // 무작위 위치 지정 함수
         function setRandomPosition(element) {
             const container = document.querySelector('.rainbow-text');
             const maxX = container.clientWidth - element.offsetWidth;
@@ -92,39 +89,34 @@
             element.style.top = `${randomY}px`;
         }
 
-        // 글자를 무작위로 움직이게 하는 함수
         function startMoving() {
             moveIntervalId = setInterval(() => {
                 letters.forEach(letter => setRandomPosition(letter));
-            }, 100); // 0.1초마다 위치 변경
+            }, 100);
         }
 
-        // 글자를 고정된 위치에서 멈추게 하는 함수
         function stopMoving() {
-            clearInterval(moveIntervalId); // 움직임 중지
-            letters.forEach((letter, index) => {
-                letter.style.position = 'relative'; // 컨테이너 내부 고정 위치로
+            clearInterval(moveIntervalId);
+            letters.forEach(letter => {
+                letter.style.position = 'relative';
                 letter.style.left = '0';
                 letter.style.top = '0';
             });
         }
 
-        // 스위치 버튼 클릭 이벤트
         document.getElementById('toggleButton').addEventListener('click', () => {
             isMoving = !isMoving;
             if (isMoving) {
                 startMoving();
-                document.getElementById('toggleButton').textContent = '움직임 끄기';
+                toggleButton.textContent = '움직임 끄기';
             } else {
                 stopMoving();
-                document.getElementById('toggleButton').textContent = '움직임 켜기';
+                toggleButton.textContent = '움직임 켜기';
             }
         });
 
-        // 초기 상태 고정
         stopMoving();
     </script>
 
 </body>
 </html>
-
